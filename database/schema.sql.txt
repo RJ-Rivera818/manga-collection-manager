@@ -1,0 +1,10 @@
+USE manga_collection;
+
+CREATE TABLE series (
+series_id CHAR(12) PRIMARY KEY,
+name VARCHAR(255) NOT NULL,
+start_date DATE NULL,
+end_date DATE NULL,
+status ENUM('Ongoing','Completed', 'Cancelled', 'Unknown', 'On Hold') NOT NULL DEFAULT 'unknown');
+
+CREATE TABLE creator ();
