@@ -15,22 +15,26 @@ def parse_volume_input(volume_input):
     for volume_number in volume_number_list:
         volume_number = volume_number.strip()
 
-        if "-" in volume_number:
+        if "--" in volume_number:
+            print(f"{volume_number} is not a valid volume range\n")
+            continue
+
+        elif "-" in volume_number:
             range_split = volume_number.split("-")
 
             if len(range_split) != 2:
-                print(f"{volume_number} is not a valid volume range")
+                print(f"{volume_number} is not a valid volume range\n")
                 continue
 
             if not range_split[0].isdigit() or not range_split[1].isdigit():
-                print(f"{volume_number} is not a valid volume range")
+                print(f"{volume_number} is not a valid volume range\n")
                 continue
 
-            start = int(range_split[0])
-            end = int(range_split[1])
+            start = min(map(int, range_split))
+            end = max(map(int, range_split))
 
             if start > end:
-                print(f"{volume_number} is not a valid volume range")
+                print(f"{volume_number} is not a valid volume range\n")
                 continue
 
             volume_range = range(start, end + 1)
@@ -39,12 +43,13 @@ def parse_volume_input(volume_input):
                 volumes.append(str(number))
 
         elif not volume_number.isdigit():
-            print(f"{volume_number} is not a valid volume number")
+            print(f"{volume_number} is not a valid volume number\n")
             continue
 
         else:
             volumes.append(volume_number)
-            return list(dict.fromkeys(volumes))
+
+    return list(dict.fromkeys(volumes))
 
 # adding volumes
 def add_volume(db, edition_id):
