@@ -1,5 +1,5 @@
 # search function
-def search_series():
+def search_series(db):
 
     search = input("\nWhat manga are you seaching for?: ")
 
@@ -60,7 +60,7 @@ def print_volume_ranges(statuses):
         print(f"Volume {start}-{end} - {current_status}")
 
 # series data fetch function
-def series_data(series=None, selected_edition=None):
+def series_data(db,series=None, selected_edition=None):
     cursor = db.cursor()
 
     if series is None:
@@ -138,13 +138,13 @@ def series_data(series=None, selected_edition=None):
 
     return selected_edition
 
-#
+# edition selection tree
 def edition_selection(editions):
-    print("\nAvailable Editions:")
     if len(editions) == 1:
         return editions[0]
 
     print("\nAvailable Editions:")
+
     for i, edition in enumerate(editions, start=1):
         print(
             f"{i}. {edition[2]} - "
@@ -162,7 +162,7 @@ def edition_selection(editions):
 
     return selected_edition
 
-#
+# let's user pick between similar results
 def series_search_selection(series_search_results):
     print("\nAvailable Series:")
 

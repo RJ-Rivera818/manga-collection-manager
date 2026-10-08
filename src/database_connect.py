@@ -11,10 +11,9 @@ def database_connection():
             database="manga_collection"
         )
         print("Connected to MySQL!\n")
+        return db
 
     except mysql.connector.Error as error_code:
         print("failed to connect to MySQL database.", error_code)
         print(f"Database connection failed: {error_code}")
-        exit()
-
-    return db
+        return none

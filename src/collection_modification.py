@@ -96,7 +96,7 @@ def add_volume(db, edition_id):
                 (volume_id, ownership_id)
             )
 
-            print(f"Volume {volume_number} added successfully!")
+            print(f"\nVolume {volume_number} added successfully!")
         else:
             print(f"You already own Volume {volume_number}!")
 
@@ -138,7 +138,7 @@ def remove_volume(db, edition_id):
         "DELETE FROM ownership WHERE volume_id = %s",
     (volume_id,)
             )
-            print(f"Volume {volume_number} removed successfully!")
+            print(f"Volume {volume_number} removed successfully")
 
     db.commit()
 

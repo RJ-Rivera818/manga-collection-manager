@@ -9,7 +9,7 @@ def main():
     db = database_connection()
 
     while True:
-        series = search_series()
+        series = search_series(db)
 
         # Handle a failed search
         if series is None:
@@ -33,7 +33,7 @@ def main():
         selected_edition = None
 
         while True:
-            selected_edition = series_data(series, selected_edition)
+            selected_edition = series_data(db, series, selected_edition)
 
             add_remove_choice = input(
                 "\nWould you like to add/remove volumes from this series? (y/n): "
