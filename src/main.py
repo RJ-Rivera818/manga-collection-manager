@@ -3,13 +3,19 @@ import mysql.connector
 from collection_modification import collection_mod, add_volume, remove_volume
 
 # starts the connection to the database
-db = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password=os.getenv("***PASSWORD***"),
-    database="manga_collection"
-)
-print("Connected to MySQL!\n")
+try:
+    db = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password=os.getenv("***PASSWORD***"),
+        database="manga_collection"
+    )
+    print("Connected to MySQL!\n")
+
+except mysql.connector.Error as error_code:
+    print("failed to connect to MySQL database.", error_code)
+    print(f"Database connection failed: {error_code}")
+    exit()
 
 # search function
 def search_series():
@@ -19,19 +25,25 @@ def search_series():
     cursor = db.cursor()
 
     cursor.execute(
-        "SELECT * FROM series WHERE name = %s",
-        (search,)
+        "SELECT * FROM series WHERE name LIKE %s",
+        (f"%{search}%",)
     )
 
-    result = cursor.fetchone()
+    series_search_results = cursor.fetchall()
 
-    if result is None:
+    if not series_search_results:
         print("- Series not found")
         return None
 
-    print("\n", result[1])
-    print(f"Status: {result[4]}\n")
-    return result
+    if len(series_search_results) == 1:
+        selected_series = series_search_results[0]
+    else:
+        selected_series = series_search_selection(series_search_results)
+
+    print("\n", selected_series[1])
+    print(f"Status: {selected_series[4]}\n")
+
+    return selected_series
 
 # outputs vols formated in proper ranges
 def print_volume_ranges(statuses):
@@ -87,6 +99,7 @@ def series_data(series=None, selected_edition=None):
     # gets edition
     if selected_edition is None:
         selected_edition = edition_selection(editions)
+
     edition_id = selected_edition[0]
 
     cursor.execute(
@@ -142,7 +155,10 @@ def series_data(series=None, selected_edition=None):
 #
 def edition_selection(editions):
     print("\nAvailable Editions:")
+    if len(editions) == 1:
+        return editions[0]
 
+    print("\nAvailable Editions:")
     for i, edition in enumerate(editions, start=1):
         print(
             f"{i}. {edition[2]} - "
@@ -159,6 +175,22 @@ def edition_selection(editions):
     selected_edition = editions[int(edition_choice) - 1]
 
     return selected_edition
+
+def series_search_selection(series_search_results):
+    print("\nAvailable Series:")
+
+    for i, series in enumerate(series_search_results, start=1):
+        print(f"{i}. {series[1]} ")
+
+    series_choice = input("\nWhich series would you like to select? ")
+
+    while not series_choice.isdigit() or not 1 <= int(series_choice) <= len(series_search_results):
+        print(f"Please enter a number from 1 to {len(series_search_results)}.")
+        series_choice = input("\nWhich series would you like to select? ")
+
+    selected_series = series_search_results[int(series_choice) - 1]
+
+    return selected_series
 
 # main
 def main():
