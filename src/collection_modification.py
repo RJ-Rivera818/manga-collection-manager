@@ -7,16 +7,11 @@ def collection_mod():
     user_collection_choice = input("What would you like to do? \n1. add a volume \n2. Remove a volume \n>  ")
     return user_collection_choice
 
-# adding volumes
-def add_volume(db, edition_id):
-    prefix = "OWN"
-    print("\n")
-
-    volume_input = input("What volumes are you adding: ")
+# takes using input and puts it into list while also removing dupes
+def parse_volume_input(volume_input):
     volume_number_list = volume_input.split(",")
+    volumes = []
 
-    # Build one list containing every individual volume number
-    volumes_to_add = []
     for volume_number in volume_number_list:
         volume_number = volume_number.strip()
 
@@ -41,23 +36,27 @@ def add_volume(db, edition_id):
             volume_range = range(start, end + 1)
 
             for number in volume_range:
-                volumes_to_add.append(str(number))
+                volumes.append(str(number))
 
         elif not volume_number.isdigit():
             print(f"{volume_number} is not a valid volume number")
             continue
 
         else:
-            volumes_to_add.append(volume_number)
+            volumes.append(volume_number)
+            return list(dict.fromkeys(volumes))
 
+# adding volumes
+def add_volume(db, edition_id):
+    prefix = "OWN"
+    print("\n")
+
+    volume_input = input("What volumes are you adding: ")
+    volumes_to_add = parse_volume_input(volume_input)
 
     cursor = db.cursor()
 
-    # Remove duplicate volumes
-    unique_volumes_to_add = list(dict.fromkeys(volumes_to_add))
-
-    # Process every individual volume
-    for volume_number in unique_volumes_to_add:
+    for volume_number in volumes_to_add:
 
         cursor.execute(
             "SELECT * FROM volume WHERE edition_id = %s AND volume_number = %s",
@@ -93,7 +92,6 @@ def add_volume(db, edition_id):
             )
 
             print(f"Volume {volume_number} added successfully!")
-
         else:
             print(f"You already own Volume {volume_number}!")
 
@@ -102,56 +100,12 @@ def add_volume(db, edition_id):
 # removing volumes
 def remove_volume(db, edition_id):
 # vars
-    volume_number = input("what volumes are you removing? ")
+    volume_input = input("what volumes are you removing: ")
+    volumes_to_remove = parse_volume_input(volume_input)
 
-    volume_number_list = volume_number.split(",")
+    cursor = db.cursor()
 
-
-    volumes_to_remove = []
-
-    for volume_number in volume_number_list:
-        volume_number = volume_number.strip()
-
-        if "-" in volume_number:
-            range_split = volume_number.split("-")
-
-            if len(range_split) != 2:
-                print(f"{volume_number} is not a valid volume range")
-                continue
-
-            if not range_split[0].isdigit() or not range_split[1].isdigit():
-                print(f"{volume_number} is not a valid volume range")
-                continue
-
-            start = int(range_split[0])
-            end = int(range_split[1])
-
-            if start > end:
-                print(f"{volume_number} is not a valid volume range")
-                continue
-
-            volume_range = range(start, end + 1)
-
-            for number in volume_range:
-                volumes_to_remove.append(str(number))
-
-        elif not volume_number.isdigit():
-            print(f"{volume_number} is not a valid volume number")
-            continue
-
-        else:
-            volumes_to_remove.append(volume_number)
-
-        cursor = db.cursor()
-
-    # Remove duplicate volumes
-    unique_volumes_to_remove = list(dict.fromkeys(volumes_to_remove))
-
-    for volume_number in unique_volumes_to_remove:
-
-
-
-
+    for volume_number in volumes_to_remove:
         cursor.execute(
         "SELECT * FROM volume WHERE edition_id =%s AND volume_number = %s",
         (edition_id, volume_number,)
@@ -164,8 +118,6 @@ def remove_volume(db, edition_id):
             continue
 
         volume_id = volume[0]
-
-
 
         cursor.execute(
             "SELECT * FROM ownership WHERE volume_id = %s",
@@ -182,4 +134,6 @@ def remove_volume(db, edition_id):
     (volume_id,)
             )
             print(f"Volume {volume_number} removed successfully!")
+
     db.commit()
+
