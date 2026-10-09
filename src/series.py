@@ -1,3 +1,5 @@
+import mysql.connector
+
 # search function
 def search_series(db):
 
@@ -131,6 +133,7 @@ def series_data(db,series=None, selected_edition=None):
 
     if completion == 1:
         print("100% completion!!")
+
     else:
         print(f"Your collection is {completion:.1%} complete\n")
 
