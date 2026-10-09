@@ -1,14 +1,18 @@
-# Environment variables and secrets
+# Personal manga collection
+database/manga_catalog.json
+
+# Credentials and local environment settings
 .env
 .env.*
+!.env.example
 
-# Python virtual environments
+# Python generated files
+__pycache__/
+*.py[cod]
 .venv/
 venv/
 
-# Python cache files
-__pycache__/
-*.py[cod]
-
-# PyCharm project settings
-.idea/
+# Local database files and backups
+*.db
+*.sqlite
+*.sqlite3

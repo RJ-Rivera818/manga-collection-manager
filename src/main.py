@@ -35,6 +35,9 @@ def main():
         while True:
             selected_edition = series_data(db, series, selected_edition)
 
+            if selected_edition is None:
+                break
+
             add_remove_choice = input(
                 "\nWould you like to add/remove volumes from this series? (y/n): "
             ).lower()
@@ -59,6 +62,7 @@ def main():
 
             elif collection_mod_menu_choice == "2":
                 remove_volume(db, selected_edition[0])
+
 
         # Ask whether to search for another series
         user_search_choice = input(
