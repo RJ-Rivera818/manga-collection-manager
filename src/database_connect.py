@@ -16,4 +16,4 @@ def database_connection():
     except mysql.connector.Error as error_code:
         print("failed to connect to MySQL database.", error_code)
         print(f"Database connection failed: {error_code}")
-        return none
+        return None
