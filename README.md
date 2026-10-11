@@ -43,6 +43,7 @@ This is a program I made to better organize and catalog my home manga collection
 * Python 3
 * MySQL
 * `mysql-connector-python`
+* `python-dotenv`
 
 ## Project Structure
 
@@ -62,18 +63,58 @@ The database currently contains four tables:
 * `volume`
 * `ownership`
 
-## Database Connection Setup
 
-The program uses an environment variable to store the database password instead of storing it directly in the source code.
+## 🚀 Quick Start
 
-The environment variable name must match the name passed to `os.getenv()` in `database_connect.py`.
+Follow these steps to set up and run the Manga Collection Manager locally:
 
-For example, if your code uses `os.getenv("***PASSWORD***")`, configure the environment variable as follows:
+### 1. Clone the Repository
 
-```text
-***PASSWORD***=Your_Password
+```bash
+git clone [https://github.com/RJ-Rivera818/manga-collection-manager.git](https://github.com/RJ-Rivera818/manga-collection-manager.git)
+cd manga-collection-manager
 ```
 
-Replace `Your_Password` with your actual MySQL password in your local environment. **Never put your actual password in this README or commit it to GitHub.**
+### 2. Install Dependencies
 
-The database connection is configured in `database_connect.py`.
+Install the required packages listed in your `requirements.txt`:
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Configure Environment Variables
+
+Create a `.env` file in the root directory (matching your `database_connect.py` setup) and add your MySQL database credentials:
+
+```env
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=your_mysql_password
+DB_NAME=manga_collection
+```
+
+### 4. Initialize the Database
+
+Create your MySQL database and set up the required tables (`series`, `edition`, `volume`, `ownership`):
+
+```bash
+mysql -u root -p -e "CREATE DATABASE manga_collection;"
+mysql -u root -p manga_collection < database/schema.sql
+```
+
+### 5. Populate the Database Using the `.json` Catalog
+
+Before using the main program, you must populate your database with manga series, editions, and volume data using the provided `.json` catalog file in the `database/` folder. Run the import script:
+
+```bash
+python src/import_catalog.py
+```
+
+### 6. Run the Application
+
+Once your database is populated, launch the main program to manage your collection:
+
+```bash
+python src/main.py
+```
