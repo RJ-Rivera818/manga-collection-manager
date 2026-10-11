@@ -1,0 +1,25 @@
+{
+  "series": [
+    {
+      "name": "Example Manga",
+      "alternate_name": null,
+      "creators": [
+        "Example Author"
+      ],
+      "status": "Ongoing",
+      "start_date": "2024-01-01",
+      "end_date": null,
+      "date_notes": "Example dates for demonstration purposes.",
+      "editions": [
+        {
+          "name": "Standard Edition",
+          "publisher": "Example Publisher",
+          "format_label": "Paperback",
+          "volume_count": 5,
+          "owned_volumes": [1, 2, 3],
+          "notes": "Example edition. Volumes 4 and 5 are not owned."
+        }
+      ]
+    }
+  ]
+}
