@@ -169,7 +169,10 @@ def edition_selection(editions):
 def series_search_selection(series_search_results):
     print("\nAvailable Series:")
 
-    for i, series in enumerate(series_search_results, start=1):
+# sorts search results
+    sorted_results = sorted(series_search_results, key=lambda x: x[1])
+
+    for i, series in enumerate(sorted_results, start=1):
         print(f"{i}. {series[1]} ")
 
     series_choice = input("\nWhich series would you like to select? ")
