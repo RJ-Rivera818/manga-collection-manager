@@ -5,10 +5,10 @@ import mysql.connector
 def database_connection():
     try:
         db = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password=os.getenv("***PASSWORD***"),
-            database="manga_collection"
+            host=os.getenv("DB_HOST"),
+            user=os.getenv("DB_USER"),
+            password=os.getenv("DB_PASSWORD"),
+            database=os.getenv("DB_NAME")
         )
         print("Connected to MySQL!\n")
         return db
