@@ -1,7 +1,7 @@
 from collection_modification import collection_mod, add_volume, remove_volume
 from series import search_series, print_volume_ranges, series_data, edition_selection, series_search_selection
 from database_connect import database_connection
-
+from dotenv import load_dotenv
 
 
 # main
@@ -78,5 +78,5 @@ def main():
         if user_search_choice == "n":
             print("\nHappy collecting!!")
             break
-
+load_dotenv()
 main()
