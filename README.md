@@ -71,7 +71,7 @@ Follow these steps to set up and run the Manga Collection Manager locally:
 ### 1. Clone the Repository
 
 ```bash
-git clone [https://github.com/RJ-Rivera818/manga-collection-manager.git](https://github.com/RJ-Rivera818/manga-collection-manager.git)
+git clone https://github.com/RJ-Rivera818/manga-collection-manager.git
 cd manga-collection-manager
 ```
 
