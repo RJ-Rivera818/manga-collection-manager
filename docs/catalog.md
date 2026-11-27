@@ -40,6 +40,7 @@ Use `database/manga_catalog.example.json` as a template.
 
 The file has one top-level key, `series`, which holds a list of series.
 Each series holds a list of `editions`.
+
 fields preceded by a `*` are required  
 
 ### Series fields
